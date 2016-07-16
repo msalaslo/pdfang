@@ -1,11 +1,9 @@
 package com.msl.pdfa.pdf.gen;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.io.StringBufferInputStream;
 import java.net.URL;
 
 import org.slf4j.Logger;
@@ -22,6 +20,8 @@ import com.msl.pdfa.pdf.io.IOUtils;
 
 public class HTMLToPDFConverter {
 
+	private static boolean createDebugFiles = true;
+	
 	private static Logger logger = LoggerFactory.getLogger(HTMLToPDFConverter.class);
 
 	public static final String[] FONTS = { "ARIAL.TTF", "TradeGothicLTStd.ttf", "TradeGothicLTStd-Bold.ttf", "TradeGothicLTStd-Light.ttf", "flysaa-icons.ttf"};
@@ -30,7 +30,9 @@ public class HTMLToPDFConverter {
 	public static void htmlToPDF(URL requestURL, String inputHTML, OutputStream outPDF, String language, String title) throws UtilException {
 		try {
 			String htmlTidied = HTMLTidier.getHTMLTidied(requestURL, inputHTML);
-			IOUtils.stringToFile(htmlTidied, new File("c:\\temp\\pdfa-test" + System.currentTimeMillis() + ".html"));
+			if(createDebugFiles){
+				IOUtils.stringToFile(htmlTidied, new File("c:\\temp\\pdfa-test" + System.currentTimeMillis() + ".html"));
+			}
 			generatePDFFromHTML(requestURL, htmlTidied, outPDF, language, title);
 		} catch (Exception e) {
 			logger.error("Error converting HTML to PDF", e);
@@ -41,7 +43,9 @@ public class HTMLToPDFConverter {
 	public static void htmlToPDF(URL url, OutputStream outPDF, String language, String title) throws UtilException {
 		try {
 			String htmlTidied = HTMLTidier.getHTMLTidied(url);
-			IOUtils.stringToFile(htmlTidied, new File("c:\\temp\\pdfa-test" + System.currentTimeMillis() + ".html"));
+			if(createDebugFiles){
+				IOUtils.stringToFile(htmlTidied, new File("c:\\temp\\pdfa-test" + System.currentTimeMillis() + ".html"));
+			}
 			generatePDFFromHTML(url, htmlTidied, outPDF, language, title);
 		} catch (Exception e) {
 			logger.error("Error converting HTML to PDF", e);
